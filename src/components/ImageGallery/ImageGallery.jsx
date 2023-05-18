@@ -1,4 +1,4 @@
-import { useEffect, useState, } from 'react';
+import { useEffect, useState } from 'react';
 import css from './ImageGallery.module.css';
 import getImages from '../../Api/api';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
@@ -10,21 +10,7 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
     const[status,setStatus]= useState('idle')
 
   useEffect(() => {
-    if (!inputValue) {
-      return
-    }
-       fetchLoad();
-    setStatus('pending')
-  
-  }, [ inputValue])
-  useEffect(() => {
-    if (!inputValue) {
-      return;
-    }
-     fetchLoadMore();
-  },[page])
-
- const fetchLoad = () => {
+     const fetchLoad = () => {
 
 
     getImages(inputValue, page)
@@ -37,17 +23,61 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
       })
       .catch(error => this.setStatus('rejected'));
   };
+    if (!inputValue) {
+      return
+    }
+       fetchLoad();
+    setStatus('pending')
+  
+  }, [inputValue, page])
+  
 
- const fetchLoadMore = () => {
+
+  useEffect(() => {
+    const fetchLoadMore = () => {
 
     getImages(inputValue, page)
       .then(response => {
-        setStatus('resolve')
-        setImages([...images,...response.hits])
+          setStatus('resolve')
+        setImages([...images, ...response.hits]
+        )
+       
 
       })
       .catch(error => this.setStatus( 'rejected' ));
-  };
+    };
+    
+
+    if (!inputValue) {
+      return;
+    }
+     fetchLoadMore();
+  },[page, inputValue])
+
+//  const fetchLoad = () => {
+
+
+//     getImages(inputValue, page)
+//       .then(response => {
+     
+//         setImages(response.hits)
+//            setStatus('resolve')
+      
+
+//       })
+//       .catch(error => this.setStatus('rejected'));
+//   };
+
+//  const fetchLoadMore = () => {
+
+//     getImages(inputValue, page)
+//       .then(response => {
+//         setStatus('resolve')
+//         setImages([...images,...response.hits])
+
+//       })
+//       .catch(error => this.setStatus( 'rejected' ));
+//   };
 
 
 
