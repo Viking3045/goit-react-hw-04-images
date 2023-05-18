@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, } from 'react';
 import css from './ImageGallery.module.css';
 import getImages from '../../Api/api';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
@@ -13,9 +13,10 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
     if (!inputValue) {
       return
     }
+       fetchLoad();
     setStatus('pending')
-     fetchLoad();
-  },[inputValue])
+  
+  }, [ inputValue])
   useEffect(() => {
     if (!inputValue) {
       return;
