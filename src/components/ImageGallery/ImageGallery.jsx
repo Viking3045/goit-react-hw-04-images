@@ -15,32 +15,28 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
 
     getImages(inputValue, page)
       .then(response => {
-     
         setImages(response.hits)
            setStatus('resolve')
-      
-
       })
       .catch(error => this.setStatus('rejected'));
   };
     if (!inputValue) {
       return
     }
-       fetchLoad();
+    fetchLoad();
     setStatus('pending')
-  
   }, [inputValue, page])
   
- const fetchLoadMore = useCallback(() => {
 
+ const fetchLoadMore = useCallback(() => {
     getImages(inputValue, page)
       .then(response => {
         setStatus('resolve')
         setImages([...images,...response.hits])
-
       })
       .catch(error => this.setStatus( 'rejected' ));
   },[ inputValue, page]);
+
 
   useEffect(() => {
     if (!inputValue) {
