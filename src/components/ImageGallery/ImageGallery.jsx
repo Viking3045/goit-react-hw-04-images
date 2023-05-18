@@ -1,59 +1,55 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import css from './ImageGallery.module.css';
 import getImages from '../../Api/api';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
 
-export default class ImageGallery extends Component {
-  static propTypes = {
-    onClick: PropTypes.func.isRequired,
-    inputValue: PropTypes.string.isRequired,
-  };
+export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
+  const [images, setImages] = useState([])
+    const[status,setStatus]= useState('idle')
 
-  state = {
-    images: [],
-    status: 'idle',
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.inputValue !== this.props.inputValue) {
-      this.fetchLoad();
+  useEffect(() => {
+    if (!inputValue) {
+      return
     }
-    if (prevProps.page !== this.props.page && this.props.page > 1) {
-      this.fetchLoadMore();
+    setStatus('pending')
+     fetchLoad();
+  },[inputValue])
+  useEffect(() => {
+    if (!inputValue) {
+      return;
     }
-  }
+     fetchLoadMore();
+  },[page])
 
-  fetchLoad = () => {
-    const { inputValue, page } = this.props;
+ const fetchLoad = () => {
+
 
     getImages(inputValue, page)
       .then(response => {
-        this.setState({
-          images: response.hits,
-          status: 'resolve',
-        });
+     
+        setImages(response.hits)
+           setStatus('resolve')
+      
+
       })
-      .catch(error => this.setState({ status: 'rejected' }));
+      .catch(error => this.setStatus('rejected'));
   };
 
-  fetchLoadMore = () => {
-    const { inputValue, page } = this.props;
+ const fetchLoadMore = () => {
 
     getImages(inputValue, page)
       .then(response => {
-        this.setState(prevState => ({
-          images: [...prevState.images, ...response.hits],
-          status: 'resolve',
-        }));
+        setStatus('resolve')
+        setImages([...images,...response.hits])
+
       })
-      .catch(error => this.setState({ status: 'rejected' }));
+      .catch(error => this.setStatus( 'rejected' ));
   };
 
-  render() {
-    const { images, status } = this.state;
+
+
 
     if (status === 'pending') {
       return <Loader />;
@@ -68,17 +64,17 @@ export default class ImageGallery extends Component {
                 key={id}
                 url={largeImageURL}
                 tags={tags}
-                onClick={this.props.onClick}
+                onClick={onClick}
               />
             ))}
           </ul>
-          {this.state.images.length !== 0 ? (
-            <Button onClick={this.props.loadMoreBtn} />
+          {images.length !== 0 ? (
+            <Button onClick={loadMoreBtn} />
           ) : (
             alert('No results')
           )}
         </>
       );
-    }
+    
   }
 }
