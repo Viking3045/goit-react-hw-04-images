@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import css from './ImageGallery.module.css';
 import getImages from '../../Api/api';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
@@ -31,28 +31,23 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
   
   }, [inputValue, page])
   
-
-
-  useEffect(() => {
-    const fetchLoadMore = () => {
+ const fetchLoadMore = useCallback(() => {
 
     getImages(inputValue, page)
       .then(response => {
-          setStatus('resolve')
-        setImages([...images, ...response.hits]
-        )
-       
+        setStatus('resolve')
+        setImages([...images,...response.hits])
 
       })
       .catch(error => this.setStatus( 'rejected' ));
-    };
-    
+  },[ inputValue, page]);
 
+  useEffect(() => {
     if (!inputValue) {
       return;
     }
      fetchLoadMore();
-  },[page, inputValue])
+  },[fetchLoadMore, inputValue])
 
 //  const fetchLoad = () => {
 
@@ -68,16 +63,7 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
 //       .catch(error => this.setStatus('rejected'));
 //   };
 
-//  const fetchLoadMore = () => {
 
-//     getImages(inputValue, page)
-//       .then(response => {
-//         setStatus('resolve')
-//         setImages([...images,...response.hits])
-
-//       })
-//       .catch(error => this.setStatus( 'rejected' ));
-//   };
 
 
 
