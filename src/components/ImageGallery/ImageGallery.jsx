@@ -11,20 +11,31 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
 
   useEffect(() => {
      const fetchLoad = () => {
-
+    // setImages([])
+    //   setStatus('idle')
 
     getImages(inputValue, page)
       .then(response => {
         setImages(response.hits)
            setStatus('resolve')
       })
-      .catch(error => this.setStatus('rejected'));
+         .catch(error => this.setStatus('rejected'));
+      
   };
     if (!inputValue) {
+       
       return
     }
+
+    // setImages([])
+    //    setStatus('idle')
+     
     fetchLoad();
     setStatus('pending')
+    //  inputValue =' '
+    // setImages([])
+    // setStatus('idle')
+ 
   }, [inputValue, page])
   
 
@@ -35,7 +46,8 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
         setImages([...images,...response.hits])
       })
       .catch(error => this.setStatus( 'rejected' ));
-  },[ inputValue, page]);
+  },// eslint-disable-next-line react-hooks/exhaustive-deps
+  [ inputValue, page]);
 
 
   useEffect(() => {
