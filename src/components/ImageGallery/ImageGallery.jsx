@@ -66,11 +66,15 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick, onSearch 
             />
           ))}
         </ul>
-        {images.length !== 0 ? (
+        {(images.length !== 0) && (
+          <Button onClick={loadMoreBtn} />
+        )}
+        {/* {images.length !== 0 ? (
           <Button onClick={loadMoreBtn} />
         ) : (
-          alert('No results')
-        )}
+          // alert('No results')
+            console.log(images)
+        )} */}
       </>
     );
   }
