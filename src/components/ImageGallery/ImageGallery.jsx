@@ -5,7 +5,7 @@ import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
 
-export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
+export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick, onSearch }) => {
   const [images, setImages] = useState([]);
   const [status, setStatus] = useState('idle');
 
@@ -21,13 +21,15 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
     if (!inputValue) {
       return;
     }
-
+    
     fetchLoad();
+    onSearch();
+    setImages([])
     setStatus('pending');
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
-  console.log(images);
+  // console.log(images);
 
   const fetchLoadMore = () => {
     getImages(inputValue, page)
@@ -45,6 +47,7 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
     fetchLoadMore();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
+  
 
   if (status === 'pending') {
     return <Loader />;

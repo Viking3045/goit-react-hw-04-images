@@ -26,11 +26,16 @@ export const App = () => {
   const loadMoreBtn = () => {
     setPage(prevState => prevState + 1);
   };
+  const onSearch = () => {
+    setPage(1)
+  }
+
 
   return (
     <>
-      <Searchbar getInputValue={getInputValue} />
+      <Searchbar  onSearch={onSearch} getInputValue={getInputValue} />
       <ImageGallery
+        onSearch={onSearch}
         inputValue={inputValue}
         onClick={getLargeImg}
         loadMoreBtn={loadMoreBtn}

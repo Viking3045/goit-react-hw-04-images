@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import css from './Searchbar.module.css';
 
-export const Searchbar = ({ getInputValue }) => {
+export const Searchbar = ({ getInputValue, onSearch }) => {
   const [input, setInput] = useState('');
   // state = {
   //   input: '',
@@ -13,8 +13,11 @@ export const Searchbar = ({ getInputValue }) => {
       return;
     }
     e.preventDefault();
+
     getInputValue(input);
+     
     setInput('');
+      
   };
 
   const handleChange = e => {
