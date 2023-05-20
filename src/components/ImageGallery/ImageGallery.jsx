@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import css from './ImageGallery.module.css';
 import getImages from '../../Api/api';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
@@ -10,12 +10,17 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
     const[status,setStatus]= useState('idle')
 
   useEffect(() => {
+    // setImages([])
+    console.log(images)
+    console.log(inputValue)
+      // console.log(status)
      const fetchLoad = () => {
     // setImages([])
     //   setStatus('idle')
 
     getImages(inputValue, page)
       .then(response => {
+        // setImages([])
         setImages(response.hits)
            setStatus('resolve')
       })
@@ -35,27 +40,26 @@ export const ImageGallery = ({ inputValue, loadMoreBtn, page, onClick }) => {
     //  inputValue =' '
     // setImages([])
     // setStatus('idle')
- 
-  }, [inputValue, page])
-  
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputValue])
+  console.log(images)
 
- const fetchLoadMore = useCallback(() => {
+ const fetchLoadMore = () => {
     getImages(inputValue, page)
       .then(response => {
         setStatus('resolve')
         setImages([...images,...response.hits])
       })
       .catch(error => this.setStatus( 'rejected' ));
-  },// eslint-disable-next-line react-hooks/exhaustive-deps
-  [ inputValue, page]);
-
+  }
 
   useEffect(() => {
     if (!inputValue) {
       return;
     }
-     fetchLoadMore();
-  },[fetchLoadMore, inputValue])
+    fetchLoadMore();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[ page])
 
 //  const fetchLoad = () => {
 
